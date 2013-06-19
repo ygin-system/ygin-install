@@ -1,0 +1,19 @@
+p {font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 13px; line-height:18px;}
+
+.z {font-size:0; line-height:0; display:block; height:0}
+.clr {clear: both; font-size:0; line-height:0; height:0} /* clearing <div class="clr"></div> */
+
+.defList, .defList ul {margin:0 0 0 0; padding:0 0 0 20px; list-style:none !important}
+.defList li {margin:0; padding:5px 0; clear:both}
+
+/* Content Table */
+.cTable td {padding:0 20px 20px 0}
+.cTableB {border-top:1px solid #666; border-left:1px solid #666}
+.cTableB td {padding:5px; border-right:1px solid #666; border-bottom:1px solid #666}
+.cTableB th {padding:5px; border-right:1px solid #666; border-bottom:1px solid #666; text-align:left}
+
+.tabbable .nav-pills {margin-top:-30px}
+
+.b-contact-table td {vertical-align:top; width:33%}
+
+img{max-width:none;}

@@ -1,0 +1,26 @@
+of html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, .rst em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, .rst ol, .rst ul, li,
+fieldset, form, label, legend,
+.rst table, caption, tbody, tfoot, thead,  tr, .rst th,  .rst td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+body {line-height: 1}
+blockquote, q {quotes: none}
+:focus {outline: 0}
+ins {text-decoration: none}
+del {text-decoration: line-through}
+td, th {vertical-align:top}
+.rst ol, .rst ul {list-style: none}
+ol, ul {outline:0; font-size: 100%}
+.rst table {border-collapse: collapse; border-spacing: 0; empty-cells:show}

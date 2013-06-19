@@ -1,0 +1,14 @@
+AddDefaultCharset utf-8
+php_flag magic_quotes_gpc Off
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{HTTP_HOST} ^www\.(.+)\.(.+)\.(.+)$
+RewriteRule ^/?(.*) http://%1.%2.%3/$1 [L,R=301,NE]
+RewriteCond %{HTTP_HOST} \.
+RewriteCond %{HTTP_HOST} !\..+\.
+RewriteRule ^/?(.*) http://www.%{HTTP_HOST}/$1 [L,R=301,NE]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*) /index.php [QSA]
