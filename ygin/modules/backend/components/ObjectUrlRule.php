@@ -2,17 +2,17 @@
 
 class ObjectUrlRule extends CBaseUrlRule {
 
-  const PARAM_GROUP_OBJECT = 'g-obj';
-  const PARAM_GROUP_INSTANCE = 'g-inst';
-  const PARAM_GROUP_PARAMETER = 'g-param';
+  const PARAM_GROUP_OBJECT = 'gObj';
+  const PARAM_GROUP_INSTANCE = 'gInst';
+  const PARAM_GROUP_PARAMETER = 'gParam';
   
   const PARAM_OBJECT = 'page';
   const PARAM_OBJECT_VIEW = 'view';
-  const PARAM_OBJECT_INSTANCE = 'id_instance';
+  const PARAM_OBJECT_INSTANCE = 'idInstance';
   const PARAM_OBJECT_PARENT = 'pkey';
   const PARAM_SYSTEM_MODULE = 'mod';
   const PARAM_PAGER_NUM = 'go';
-  const PARAM_PAGER_NUM_BACK = 'go-back';
+  const PARAM_PAGER_NUM_BACK = 'goBack';
 
   const PARAM_ACTION_VIEW = 'vnum';
   
@@ -60,13 +60,13 @@ class ObjectUrlRule extends CBaseUrlRule {
 
   public function parseUrl($manager, $request, $pathInfo, $rawPathInfo) {
     $pathInfo .= '/';
-    if (preg_match('~^page/([\d\.a-zA-Z\-\_]+)(.*)~', $pathInfo, $matches)) {
+    if (preg_match('~^page/([\da-zA-Z\-\_]+)(.*)~', $pathInfo, $matches)) {
       $idObject = $matches[1];
       $remainUrl = $matches[2];
       self::$_currentUrlParams[self::PARAM_OBJECT] = $idObject;
       $idInstance = null;
       $idView = null;
-      if (preg_match('~^page/[\d\.a-zA-Z\-\_]+/([\d\-]+|[a-zA-Z\d\-\_]+\.[a-zA-Z\d\-\_\.]+)(/.*)~', $pathInfo, $matches)) {
+      if (preg_match('~^page/[\da-zA-Z\-\_]+/([\d\-]+|[a-zA-Z\d\_]+\-[a-zA-Z\d\-\_]+)(/.*)~', $pathInfo, $matches)) {
         $idInstance = trim($matches[1]);
         $remainUrl = $matches[2];
         if ($idInstance == '') $idInstance = null;
@@ -77,7 +77,7 @@ class ObjectUrlRule extends CBaseUrlRule {
         $_GET[self::PARAM_OBJECT_INSTANCE] = $idInstance;
       }
 
-      preg_match_all('~([a-zA-z\.\-\_0-9]+)/(.+?)(?:/|$)~', $remainUrl, $matches);
+      preg_match_all('~([a-zA-z\-\_0-9]+)/(.+?)(?:/|$)~', $remainUrl, $matches);
       if (is_array($matches) && is_array($matches[1]) && count($matches[1]) > 0) {
         $count = count($matches[1]);
         for ($i = 0; $i < $count; $i++) {

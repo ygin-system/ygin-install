@@ -537,13 +537,18 @@ class SearchComponent extends CApplicationComponent {
              ->where('search=1')
              ->queryColumn();
              
-    if (count($ids)) {
-      $ids2 = Yii::app()->db->createCommand()
+    if (count($ids)) { // для наследования объектов
+      $command = Yii::app()->db->createCommand()
               ->selectDistinct('id_object')
-              ->from('da_object')
-              ->where('object_type=4 AND table_name IN ('.implode(', ', $ids).')')
-              ->queryColumn();
-              
+              ->from('da_object');
+      $where = '';
+      foreach($ids AS $i => $id) {
+        if ($i > 0) $where .= ', ';
+        $where .= ':id_'.$i;
+        $command->params[':id_'.$i] = $id;
+      }
+      $command->where = 'object_type=4 AND table_name IN ('.$where.')';
+      $ids2 = $command->queryColumn();
       $ids = array_merge($ids, $ids2);
     }
     
@@ -567,25 +572,21 @@ class SearchComponent extends CApplicationComponent {
         for ($k = 0; $k < $cData; $k++) {
           $id_object = $data[$k]->getIdObject();
           if (array_key_exists($id_object, $pData)) {
-            $tempArray = array();
-            
             $pNames = $pData[$id_object];
             
             $kf = count($pNames);
+            $val = '';
             for ($j = 0; $j < $kf; $j ++) {
               $curName = $pNames[$j]['name'];
               
               $v = $data[$k]->$curName;
               
               if (!is_null($v) && (trim($v) != "")) {
-                $tempArray[] = array($pNames[$j]['id'], $v);
-              }
-              
-              if (count($tempArray) > 0) {
-                SearchComponent::replaceData($cur, $data[$k]->getPrimaryKey(), $idLang, $tempArray);
+                $val .= $v.' ';
               }
             }
           }
+          SearchComponent::replaceData($cur, $data[$k]->getPrimaryKey(), $idLang, $val);
         }
         
         $startRecord += SEARCH_DATA_PORTION;

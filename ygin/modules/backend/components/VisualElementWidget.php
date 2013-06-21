@@ -89,10 +89,12 @@ class VisualElementWidget extends VisualElementBaseWidget {
       }
     }
     if ($this->autoRequiredValidator && $this->attributeName != null && $this->getObjectParameter() != null && !$this->canNull() && isset($this->model->getMetaData()->columns[$this->attributeName]) ) {
-      $this->model->addValidator(CValidator::createValidator('required', $this->model, $this->attributeName, array('on' => 'backendInsert, backendUpdate')));
+      if (!$this->model->isAttributeRequired($this->attributeName))
+        $this->model->addValidator(CValidator::createValidator('required', $this->model, $this->attributeName, array('on' => 'backendInsert, backendUpdate')));
     }
     if ($this->autoUniqueValidator && $this->attributeName != null && $this->getObjectParameter() != null && $this->getObjectParameter()->isUnique() && isset($this->model->getMetaData()->columns[$this->attributeName]) ) {
-      $this->model->addValidator(CValidator::createValidator('required', $this->model, $this->attributeName, array('on' => 'backendInsert, backendUpdate')));  // добавляем ещё такой валидатор, т.к. если значение === null, то в yii идет неверная проверка
+      if (!$this->model->isAttributeRequired($this->attributeName))
+        $this->model->addValidator(CValidator::createValidator('required', $this->model, $this->attributeName, array('on' => 'backendInsert, backendUpdate')));  // добавляем ещё такой валидатор, т.к. если значение === null, то в yii идет неверная проверка
       $this->model->addValidator(CValidator::createValidator('unique', $this->model, $this->attributeName, array('on' => 'backendInsert, backendUpdate')));
     }
   }
@@ -101,6 +103,7 @@ class VisualElementWidget extends VisualElementBaseWidget {
     /**
      * @var DaObject $object
      */
+    if ($this->objectParameter == null) return null;
     $defaultValue = $this->objectParameter->getDefaultValue();
     if (mb_strpos($defaultValue, "$") !== false || mb_strpos($defaultValue, "::") !== false) {
       $defaultValue = '$defaultValue = '.addslashes($defaultValue).';';

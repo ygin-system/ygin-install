@@ -50,9 +50,9 @@
 <?php endforeach; ?>
 <?php endif; ?>
  */
-class <?php echo $modelClass; ?> extends <?php echo $this->baseClass."\n"; ?> {
+class <?php echo $modelClass; ?> extends <?php echo $this->baseClass; ?> {
 
-  const ID_OBJECT = <?php echo $this->getObjectId(); ?>;
+  const ID_OBJECT = '<?php echo $this->getObjectId(); ?>';
 
   protected $idObject = self::ID_OBJECT;
 
@@ -61,7 +61,7 @@ class <?php echo $modelClass; ?> extends <?php echo $this->baseClass."\n"; ?> {
    * @param string $className active record class name.
    * @return <?php echo $modelClass; ?> the static model class
    */
-  public static function model($className=__CLASS__) {
+  public static function model($className = __CLASS__) {
     return parent::model($className);
   }
 
@@ -80,7 +80,6 @@ class <?php echo $modelClass; ?> extends <?php echo $this->baseClass."\n"; ?> {
 <?php foreach($rules as $rule): ?>
       <?php echo $rule.",\n"; ?>
 <?php endforeach; ?>
-
     );
   }
 

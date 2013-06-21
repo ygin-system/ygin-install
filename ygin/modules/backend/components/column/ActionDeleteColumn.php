@@ -37,9 +37,9 @@ class ActionDeleteColumn extends ActionColumn {
         'url' => Yii::app()->createUrl('backend/ygin/deleteRecord'),
         'data' => 'js:{idObject:idObject, idInstance:idInstance}',
         'success' => 'function(data){
-  if (data.error !== undefined) {$.daSticker({text:data.error, type:"error", sticked:true}); $("#ygin_inst_" + data.idInstance.replace(new RegExp("\\\\.","g"), "\\\\.") + " .action-delete a").removeClass("process"); return;}
+  if (data.error !== undefined) {$.daSticker({text:data.error, type:"error", sticked:true}); $("#ygin_inst_" + data.idInstance + " .action-delete a").removeClass("process"); return;}
   $.daSticker({text:data.message, type:"success"});
-  $("#ygin_inst_" + data.idInstance.replace(new RegExp("\\\\.","g"), "\\\\.")).remove();
+  $("#ygin_inst_" + data.idInstance).remove();
   if ($(".b-instance-list tbody tr").length == 0) {$(".b-instance-list, .b-instance-list-count").remove();}
 }',
       )).'

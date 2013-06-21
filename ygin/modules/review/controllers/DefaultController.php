@@ -27,10 +27,10 @@ class DefaultController extends Controller {
     $criteria->order = 'create_date DESC';
 
     $dataProvider = new CActiveDataProvider($modelClass, array(
-            'criteria' => $criteria,
-            'pagination' => array(
-               'pageSize' => $this->module->pageSize,
-            ),
+      'criteria' => $criteria,
+      'pagination' => array(
+         'pageSize' => $this->module->pageSize,
+      ),
     ));
 
     $this->render('/index', array(
@@ -40,37 +40,10 @@ class DefaultController extends Controller {
   }
   
   public function sendMessage(CEvent $event) {
-    /**
-     * @var Review $model
-     */
-    $model = $event->sender;
-    $message = '';
-    $default = true;
-    if ($this->module->hasEventHandler('onFormMessage')) {
-      $formMsgEvent = new CEvent($model);
-      $this->module->onFormMessage($formMsgEvent);
-      $message = HArray::val($formMsgEvent->params, 'message');
-      //если сообщение пришло пустое
-      //то формируем ссобщение по-умолчанию
-      $default = empty($message);
-    }
-    if ($default) {
-      $tmpl = "Отправлен новый отзыв.\n".
-        "время: {time}\n".
-        "имя: {name}\n".
-        "контакты: {email}\n".
-        "Текст сообщения:\n{msg}\n\n".
-        "---\n".
-        "Данное сообщение отправлено автоматически, отвечать на него не нужно.";
-      
-      $message = strtr($tmpl, array(
-        '{time}'  => date('d.m.Y H:i', $model->create_date),
-        '{name}'  => $model->name,
-        '{email}' => $model->contact,
-        '{msg}'   => $model->review,
-      ));
-    }
-    Yii::app()->notifier->addNewEvent($this->module->idEventType, $message);
+    Yii::app()->notifier->addNewEvent(
+      $this->module->idEventType, 
+      $this->renderPartial('/message_email', array('review' => $event->sender), true)
+    );
   }
 
 }

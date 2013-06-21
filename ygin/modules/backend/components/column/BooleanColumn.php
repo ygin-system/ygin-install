@@ -56,7 +56,7 @@ class BooleanColumn extends BaseColumn {
       $idObject = $this->object->id_object;
       $idObjectParameter = $this->objectParameter->getIdParameter();
       if ($this->_permission[$idInstance]) {
-        $htmlOptions['onclick'] = 'booleanColumn('.$idInstance.', '.$idObject.', '.$idObjectParameter.');';
+        $htmlOptions['onclick'] = 'booleanColumn('.CJavaScript::encode($idInstance).', '.CJavaScript::encode($idObject).', '.CJavaScript::encode($idObjectParameter).');';
         $htmlOptions['class'] .= ' editable';
         $htmlOptions['title'] = 'Изменить';
       }

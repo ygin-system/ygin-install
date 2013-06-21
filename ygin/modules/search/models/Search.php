@@ -41,8 +41,8 @@ class Search extends CActiveRecord {
   public function rules() {
     return array(
       array('id_object, id_instance, id_lang, value', 'required'),
-      array('id_object, id_instance, id_lang', 'numerical', 'integerOnly'=>true),
-
+      array('id_instance, id_lang', 'numerical', 'integerOnly'=>true),
+      array('id_object', 'length', 'max' => 255),
     );
   }
 

@@ -132,7 +132,7 @@ class DaDbAuthManager extends CDbAuthManager {
     $results = array_keys($this->checkMultiAccess(array($authItem), $userId, $params, $items));
     $return = array();
     foreach ($results AS $result) {
-      $return[] = intval(str_replace($authItem.'_object_', '', $result));
+      $return[] = str_replace($authItem.'_object_', '', $result);
     }
     return $return;
   }
@@ -165,16 +165,16 @@ class DaDbAuthManager extends CDbAuthManager {
   }
 
   public function checkObjectParameter($userId, $idObject, $idInstance, $idParameter) {
-    if ($idObject == null || !is_numeric($idObject)) {
+    if ($idObject == null) {
       return false;
     }
-    if ($idParameter == null || !is_numeric($idParameter)) return false;
+    if ($idParameter == null) return false;
     $object = DaObject::getById($idObject);
     $model = null;
     if (is_null($idInstance)) {
       if (!self::canCreateInstance($idObject, $userId)) return false;
     } else {
-      if ($idInstance == null || !is_numeric($idInstance)) return false;
+      if ($idInstance == null) return false;
       if (Yii::app()->authManager->checkObjectInstance(DaDbAuthManager::OPERATION_EDIT, $userId, $idObject, $idInstance)) {
         $model = $object->getModel()->findByIdInstance($idInstance);
       } else {

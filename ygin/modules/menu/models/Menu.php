@@ -26,7 +26,7 @@
  */
 class Menu extends DaActiveRecord implements ISearchable {
   
-  const ID_OBJECT = 'ygin.menu';
+  const ID_OBJECT = 'ygin-menu';
   
   private $_modules = null;
   protected $idObject = self::ID_OBJECT;

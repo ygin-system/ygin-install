@@ -233,7 +233,7 @@ var tim;
 menuTimer = function(el) {
   window.clearInterval(tim);
   tim = setInterval(function(){
-    $(el.replace(new RegExp("\\.","g"), "\\.")).fadeOut('slow');  // в ИД может быть ., заменяем . на \\.
+    $(el).fadeOut('slow');
     window.clearInterval(tim);
   }, 500);
 }
@@ -245,7 +245,7 @@ jQuery.fn.daSubData = function( options ) {
       .mouseover(function(){
         $('.action-sub-data ul').hide();
         window.clearInterval(tim);
-        rel = $(this).attr('rel').replace(new RegExp("\\.","g"), "\\.");
+        rel = $(this).attr('rel');
         $('#'+rel).slideDown('fast',function(){
           actionSubData.find('ul:not("[id=\''+rel+'\']")').hide();
         });

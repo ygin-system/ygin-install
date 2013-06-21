@@ -11,10 +11,6 @@ class ReviewModule extends DaWebModuleAbstract {
     'review' => 'review/default/index',
   );
   
-  public function onFormMessage(CEvent $event) {
-    $this->raiseEvent('onFormMessage', $event);
-  }
-  
   public function init() {
     $this->setImport(array(
       'review.models.*',

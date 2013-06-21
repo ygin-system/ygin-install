@@ -15,7 +15,7 @@ class MainMenuWidget extends CMenu {
        * @var $child DaObject
        */
       $views = $child->views;
-      if (in_array($child->id_object, $availableObjects)) {
+      if (in_array($child->id_object, $availableObjects, true)) {
         if (count($views) > 0) {
           foreach ($views AS $view) {
             $active = false;
@@ -67,7 +67,7 @@ class MainMenuWidget extends CMenu {
     if ($this->idObjectViewCurrent == null && $currentView != null) $this->idObjectViewCurrent = $currentView->id_object_view;
 
     // Получаем все доступные для просмотра объекты
-    $availableObjects = Yii::app()->authManager->checkObject('list', Yii::app()->user->id);
+    $availableObjects = Yii::app()->authManager->checkObject(DaDbAuthManager::OPERATION_LIST, Yii::app()->user->id);
     if (count($availableObjects) == 0) return;
     // Загружаем объекты первого уровня
     $cr = new CDbCriteria();

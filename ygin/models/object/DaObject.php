@@ -72,7 +72,8 @@ class DaObject extends DaActiveRecord {
    */
   public function rules() {
     return array(
-      array('name', 'required'),
+      array('id_object', 'match', 'pattern'=>'~\d+|[a-zA-Z\d\_]+\-[a-zA-Z\d\_\-]*[a-zA-Z\d\_]+~', 'message'=>'ИД объекта должен содержать дефис'),
+      array('name, id_object', 'required'),
       array('order_type, object_type, parent_object, sequence, use_domain_isolation', 'numerical', 'integerOnly'=>true),
       array('id_field_caption, id_field_order, id_object, name, table_name, folder_name, yii_model', 'length', 'max'=>255),
     );
@@ -259,6 +260,7 @@ class DaObject extends DaActiveRecord {
         $p->caption = 'id';
         $fieldName = 'id_'.str_replace('da_', '', str_replace('pr_', '', $this->table_name));
         $p->field_name = $fieldName;
+        $p->id_parameter = $idObject.'.'.$fieldName;
         $p->setIsRequired(true);
         $p->save();
       }
@@ -269,6 +271,7 @@ class DaObject extends DaActiveRecord {
         DaObjectView::model()->updateAll(array('id_object'=>$this->id_object), 'id_object=:obj', array(':obj' => $this->getPkBeforeSave()));
         DaObjectViewColumn::model()->updateAll(array('id_object'=>$this->id_object), 'id_object=:obj', array(':obj' => $this->getPkBeforeSave()));
         File::model()->updateAll(array('id_object'=>$this->id_object), 'id_object=:obj', array(':obj' => $this->getPkBeforeSave()));
+        Search::model()->updateAll(array('id_object'=>$this->id_object), 'id_object=:obj', array(':obj' => $this->getPkBeforeSave()));
       }
     }
   }
