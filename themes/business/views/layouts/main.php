@@ -18,7 +18,6 @@
   }
   Yii::app()->clientScript->registerCoreScript('jquery');
   Yii::app()->clientScript->registerCoreScript('bootstrap'); 
-  //$this->registerJsFile('bootstrap.min.js', 'ygin.assets.bootstrap.js');
   $this->registerJsFile('modernizr-2.6.1-respond-1.1.0.min.js', 'ygin.assets.js');
 
   Yii::app()->clientScript->registerScriptFile('/themes/business/js/js.js', CClientScript::POS_HEAD);
