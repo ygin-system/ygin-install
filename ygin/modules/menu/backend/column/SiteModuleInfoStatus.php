@@ -9,6 +9,7 @@ class SiteModuleInfoStatus extends BaseColumn {
     if ($data->getIdPhpScriptInstance() != null) {
       $phpScriptInstance = $data->phpScriptInstance(array('with'=>'phpScript'));
       $phpScript = $phpScriptInstance->phpScript;
+      if ($phpScript == null) {echo '-'; return;}
       $name = $phpScript->description;
       $path = $phpScript->file_path;
       $title = '';

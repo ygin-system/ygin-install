@@ -260,7 +260,7 @@ class DaObject extends DaActiveRecord {
         $p->caption = 'id';
         $fieldName = 'id_'.str_replace('da_', '', str_replace('pr_', '', $this->table_name));
         $p->field_name = $fieldName;
-        $p->id_parameter = $idObject.'.'.$fieldName;
+        $p->id_parameter = $idObject.'-'.$fieldName;
         $p->setIsRequired(true);
         $p->save();
       }

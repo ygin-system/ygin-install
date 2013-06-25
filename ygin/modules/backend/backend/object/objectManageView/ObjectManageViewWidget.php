@@ -23,9 +23,9 @@ class ObjectManageViewWidget extends VisualElementWidget {
       if ($name == "") $name = $model->getName();
 
       $view = new DaObjectView();
-      $id = $idObject.'.view.main';
+      $id = $idObject.'-view-main';
       while (DaObjectView::model()->exists('id_object_view=:id', array(':id'=>$id))) {
-        $id = $idObject.'.view.view'.rand(1, 100);
+        $id = $idObject.'-view-view'.rand(1, 100);
       }
       $view->id_object_view = $id;
       $view->name = $name;
@@ -69,7 +69,7 @@ class ObjectManageViewWidget extends VisualElementWidget {
         $p = $model->getParameterObjectByIdParameter($col);
         if ($p == null) continue;
         $column = new DaObjectViewColumn();
-        $column->id_object_view_column = $idView.'.'.$p->getFieldName();
+        $column->id_object_view_column = $idView.'-'.$p->getFieldName();
         $column->id_object_view = $idView;
         $column->id_object = $idObject;
         $column->id_object_parameter = $p->getIdParameter();

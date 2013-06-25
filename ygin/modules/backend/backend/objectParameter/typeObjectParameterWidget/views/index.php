@@ -235,7 +235,7 @@ function changeParameterField(paramType) {
       'newType'=>'js:newType',  // новый тип
       'val'=>'js:val',  // значение
       'field'=>'js:id', // имя поля
-      'id' => 'js:'.($model->isNewRecord ? -1 : $model->getIdInstance()),
+      'id' => ($model->isNewRecord ? -1 : $model->getIdInstance()),
     ),
     'type'=>'POST',
     'dataType'=>'json',

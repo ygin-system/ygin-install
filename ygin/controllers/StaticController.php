@@ -52,7 +52,7 @@ class StaticController extends Controller {
     $view = $this->viewError;
     if ($error=Yii::app()->errorHandler->error) {
       if ($error['code'] == 404) { // Устанавливаем свой макет для отображения 404 ошибки
-        $this->layout = '/404';
+        $this->layout = '404';
         $view = $this->view404;
       } else if ($error['code'] == 403) { // доступ запрещен
         $view = $this->view403;
@@ -64,7 +64,7 @@ class StaticController extends Controller {
         return;
       }
     } else {
-      $this->layout = '/404';
+      $this->layout = '404';
       $view = $this->view404;
     }
     $this->render($view, $error);
