@@ -37,7 +37,7 @@
   Yii::app()->clientScript->registerCssFile('/themes/business/css/page.css');
   $nAss = Yii::getPathOfAlias('ygin.assets.gfx').DIRECTORY_SEPARATOR;
   Yii::app()->clientScript->addDependResource('page.css', array(
-    $nAss.'loading_s.gif' => '../../../ngin/assets/gfx/',
+    $nAss.'loading_s.gif' => '../../../ygin/assets/gfx/',
   ));
 ?>
   <title><?php echo CHtml::encode($this->getPageTitle()); ?></title>
