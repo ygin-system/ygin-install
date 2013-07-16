@@ -9,7 +9,7 @@ class DropDownParentWidget extends DropDownListWidget {
 
   public function init() {
     parent::init();
-    $this->model->addValidator(CValidator::createValidator('numerical', $this->model, $this->attributeName, array('on'=>'backendInsert, backendUpdate', 'integerOnly'=>true)));
+    $this->model->addValidator(CValidator::createValidator('length', $this->model, $this->attributeName, array('on'=>'backendInsert, backendUpdate', 'max'=>255)));
   }
 
   public function getValueString() {
@@ -55,7 +55,7 @@ class DropDownParentWidget extends DropDownListWidget {
     if ($where != null) $cr->addCondition($where);
     $cr->limit = $this->maxData;
     $cr->order = $object->getOrderBy();
-    $data = $this->model->findAll($cr);
+    $data = $this->model->resetScope()->findAll($cr);
 
     $attributeName = $this->attributeName;
 

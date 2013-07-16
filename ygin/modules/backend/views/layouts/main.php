@@ -14,8 +14,8 @@
   <meta name="copyright" content="&copy; ygin">
   <link href='http://fonts.googleapis.com/css?family=Russo+One&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 <?php
-  Yii::app()->clientScript->registerMetaTag('CMS, модули, редактирование контента, голосование, администрирование', 'keywords');
-  Yii::app()->clientScript->registerMetaTag('CMS ygin', 'description');
+  Yii::app()->clientScript->registerMetaTag('CMF, модули, редактирование контента, голосование, администрирование', 'keywords');
+  Yii::app()->clientScript->registerMetaTag('CMF ygin', 'description');
 
   $ass = Yii::getPathOfAlias('backend.assets.gfx');
   Yii::app()->clientScript->registerLinkTag('icon', "image/x-icon", Yii::app()->getAssetManager()->publish($ass).'/favicon.ico');
@@ -82,7 +82,7 @@
   Yii::beginProfile('top menu', 'backend.layout.main');
   // Logo ygin
   if ($version){
-    echo CHtml::link("ygin <span class=\"label label-important\">cms</span>", Yii::app()->homeUrl,
+    echo CHtml::link("ygin <span class=\"label label-important\">CMF</span>", Yii::app()->homeUrl,
       array('class' => 'brand',
             'data-original-title' => 'v. '.$version,
             )
@@ -100,11 +100,13 @@
   if (Yii::app()->backend->userMenuWidget != null) {
     // TODO раскидать по расширениям
     $userMenuWidget = $this->createWidget(Yii::app()->backend->userMenuWidget, array('htmlOptions' => array('class' => 'dropdown-menu')) );
-    $userMenuWidget->items[] = array(
-      'label' => '<i class="icon-edit"></i> Профиль',
-      'active' => false,
-      'url' => '/admin/page/24/'.Yii::app()->user->id.'/view/6/',  // TODO верно формировать ссылку и проверять есть ли доступ к редактированию профиля
-    );
+    if (Yii::app()->user->model != null && Yii::app()->authManager->checkObjectInstance(DaDbAuthManager::OPERATION_EDIT, Yii::app()->user->id, User::ID_OBJECT, Yii::app()->user->id, false)) {
+      $userMenuWidget->items[] = array(
+        'label' => '<i class="icon-edit"></i> Профиль',
+        'active' => false,
+        'url' => '/admin/page/24/'.Yii::app()->user->id.'/view/6/',  // TODO верно формировать ссылку
+      );
+    }
 
     Yii::app()->backend->raiseEvent(BackendModule::EVENT_ON_BEFORE_USER_MENU, new CEvent($userMenuWidget));
 
