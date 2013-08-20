@@ -4,10 +4,10 @@ RewriteEngine on
 RewriteBase /
 
 # www processing
-RewriteCond %{HTTP_HOST} ^www\.(.+)\.(.+)\.(.+)$
-RewriteRule ^/?(.*) http://%1.%2.%3/$1 [L,R=301,NE]
-RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
-RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [QSA,L,R=301]
+#RewriteCond %{HTTP_HOST} ^www\.(.+)\.(.+)\.(.+)$
+#RewriteRule ^/?(.*) http://%1.%2.%3/$1 [L,R=301,NE]
+#RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
+#RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [QSA,L,R=301]
 
 # deleting index.php
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
