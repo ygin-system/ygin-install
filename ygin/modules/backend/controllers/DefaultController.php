@@ -434,11 +434,13 @@ $(document).on("beforeGridUpdate", function(e) {  $(".pagination .b-ajax-process
 
     /***Ограничение по условию, сформированным программистом в классе***/
     $event = new PermissionWhereEvent(Yii::app()->controller, $view->id_object, '');
+    $event->criteria = $criteria;
     Yii::app()->controller->raiseEvent(DefaultController::EVENT_ON_PROCESS_PERMISSION_WHERE, $event);
     $where = $event->where;
     if ($where != '') {
       $criteria->addCondition($where);
     }
+    $criteria->params = array_merge($criteria->params, $event->params);
 
     return $dataProvider;
   }
