@@ -6,6 +6,7 @@ RewriteBase /
 # www processing
 #RewriteCond %{HTTP_HOST} ^www\.(.+)\.(.+)\.(.+)$
 #RewriteRule ^/?(.*) http://%1.%2.%3/$1 [L,R=301,NE]
+#RewriteCond %{HTTP_HOST} !\..+\.
 #RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
 #RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [QSA,L,R=301]
 
