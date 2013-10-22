@@ -43,6 +43,9 @@ return array(
          'timeout' => '7200',
        ),
      ),
+     'db' => array(
+       'nullConversion' => PDO::NULL_EMPTY_STRING,
+     ),
      'log'=>array(
        'class'=>'CLogRouter',
        'routes' => array(
@@ -53,6 +56,7 @@ return array(
              'class' => 'ygin.components.DaLogFilter',
              'ignoreCategories' => array(
                'exception.CHttpException.404',
+               'exception.DaHttpException.*',
              ),
            ),
            'subject' => 'Ошибка на сайте ('.$errorSubjectHost.')',
@@ -66,6 +70,7 @@ return array(
              'class' => 'ygin.components.DaLogFilter',
              'ignoreCategories' => array(
                'exception.CHttpException.404',
+               'exception.DaHttpException.*',
              ),
              'logVars' => array('_GET','_POST','_FILES','_COOKIE','_SESSION','_SERVER'),
            ),

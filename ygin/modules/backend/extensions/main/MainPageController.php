@@ -2,6 +2,8 @@
 
 class MainPageController extends DaBackendController implements IBackendExtension {
 
+  const EVENT_ON_BEFORE_MAIN_RENDER = 'onBeforeMainRender';
+
   public function actionIndex() {
     $version = '';
     if (Yii::app()->user->checkAccess(DaWebUser::ROLE_DEV)) {
@@ -60,6 +62,25 @@ class MainPageController extends DaBackendController implements IBackendExtensio
           if ($date == $lastDateDb) $startShow = true;
         }
       }
+    }
+
+    // важные сообщения о работе системы
+    $alertError = array();
+    if (YII_DEBUG) {
+      $alertError[] = 'Включен debug-режим. При запуске сайта на production-сервере необходимо его выключить.';
+    }
+    if (Yii::app()->cache instanceof CDummyCache) {
+      $alertError[] = 'Отключено кэширование. При запуске сайта на production-сервере необходимо настроить кэширование.';
+    }
+    /**
+     * @var $logRouter CLogRouter
+     * @var $emailRoute DaEmailLogRoute
+     */
+    $logRouter = Yii::app()->getComponent('log');
+    $routes = $logRouter->getRoutes();
+    $emailRoute = $routes['email_error'];
+    if ($emailRoute->getHost() == null) {
+      $alertError[] = 'Не настроена отправка уведомлений об ошибках на электронную почту.';
     }
 
     // черновая версия TODO
@@ -122,18 +143,25 @@ class MainPageController extends DaBackendController implements IBackendExtensio
       );
     }
 
+    $this->raiseEvent(self::EVENT_ON_BEFORE_MAIN_RENDER, new CEvent($this, array('elements' => &$mainElements)));
+
     $this->render('backend.extensions.main.view', array(
       'version' => $version,
       'showWelcome' => $showWelcome,
 
       'noticeDevCookieName' => $noticeDevCookieName,
       'devNotices' => $devNotices,
+      'alertError' => $alertError,
 
       'mainElements' => $mainElements,
     ));
 
   }
-  
+
+  public function hasEvent($name) {
+    return true;
+  }
+
   // реализация события класса как компонента
   public function registerEvent($category, $obj) {
     if ($category == BackendModule::CATEGORY_BACKEND_WINDOW) {
