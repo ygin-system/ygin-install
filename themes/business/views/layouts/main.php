@@ -25,7 +25,7 @@
   Yii::app()->clientScript->registerScript('setScroll', "setAnchor();", CClientScript::POS_READY);
   Yii::app()->clientScript->registerScript('menu.init', "$('.dropdown-toggle').dropdown();", CClientScript::POS_READY);
 
-  $ass = Yii::getPathOfAlias('ygin.assets.bootstrap.img').DIRECTORY_SEPARATOR;
+  $ass = Yii::getPathOfAlias('application.assets.bootstrap.img').DIRECTORY_SEPARATOR;
   Yii::app()->clientScript->addDependResource('bootstrap.min.css', array(
     $ass.'glyphicons-halflings.png' => '../img/',
     $ass.'glyphicons-halflings-white.png' => '../img/',
