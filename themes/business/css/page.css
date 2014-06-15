@@ -3,10 +3,7 @@ html, body {
     width: 100%;
 }
 body {
-  background-repeat:repeat-x;
-  background-position:fixed center top;
   background-color:#fff;
-  /* background-image: url("http://twitter.github.com/bootstrap/assets/img/grid-18px-masked.png"); */
   padding:0;
 }
 body.printPage {text-align:left}
