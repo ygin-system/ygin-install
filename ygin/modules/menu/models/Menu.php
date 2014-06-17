@@ -36,6 +36,10 @@ class Menu extends DaActiveRecord implements ISearchable {
   const GO_TO_FIRST_CHILD = 2;
   const GO_TO_FILE        = 3;
   const GO_TO_SHOW_BLANK  = 4;
+  const SHOW_INCLUDED_ITEMS_AFTER_CONTENT  = 5;
+  const SHOW_INCLUDED_ITEMS_BEFORE_CONTENT = 6;
+
+
   
   /**
    * Returns the static model of the specified AR class.
@@ -311,11 +315,11 @@ class Menu extends DaActiveRecord implements ISearchable {
    * Получить все модули раздела
    * @return array SiteModule
    */
-  public function getModules() {
+  public function getModules($idTemplate=null) {
     if ($this->_modules !== null) return $this->_modules;
     
     $this->_modules = array();
-    $idTemplate = $this->id_module_template;
+    $idTemplate = ($idTemplate != null ? $idTemplate : $this->id_module_template);
 
     if ($idTemplate == null) {
       // Если модулей нет, то устанавливаем родительские модули
@@ -342,9 +346,9 @@ class Menu extends DaActiveRecord implements ISearchable {
    * @param int $place
    * @return array SiteModule
    */
-  public function getModulesByPlace($place) {
+  public function getModulesByPlace($place, $idTemplate=null) {
     $result = array();
-    $modules = $this->getModules();
+    $modules = $this->getModules($idTemplate);
     foreach ($modules AS $module) {
       if ($module->place->place == $place) $result[] = $module;
     }

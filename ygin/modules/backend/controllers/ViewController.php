@@ -99,13 +99,10 @@ class ViewController extends DaObjectController {
        * @var $objectParameter ObjectParameter
        */
       // Детальная обработка:
-      if (!$objectParameter->isVisible()) continue;
-      $event = new ParameterAvailableEvent($this, $model, $objectParameter);
-      $this->raiseEvent(ViewController::EVENT_ON_PARAMETER_AVAILABLE, $event);
-      $availableStatus = $event->status;
 
-      if ($availableStatus == ViewController::ENTITY_STATUS_NOT_VISIBLE) {  //Невидим
-        continue;
+      // Если свойство является группирующем, то устанавливаем значение по умолчанию
+      if ($model->isNewRecord && HU::get(ObjectUrlRule::PARAM_GROUP_PARAMETER) == $objectParameter->getIdParameter()) {
+        $model->{$objectParameter->getFieldName()} = HU::get(ObjectUrlRule::PARAM_GROUP_INSTANCE);
       }
 
       // Установка значений свойств экземпляра по умолчанию
@@ -123,12 +120,21 @@ class ViewController extends DaObjectController {
         }
       }
 
+      if (!$objectParameter->isVisible()) continue;
+      $event = new ParameterAvailableEvent($this, $model, $objectParameter);
+      $this->raiseEvent(ViewController::EVENT_ON_PARAMETER_AVAILABLE, $event);
+      $availableStatus = $event->status;
+
+      if ($availableStatus == ViewController::ENTITY_STATUS_NOT_VISIBLE) {  //Невидим
+        continue;
+      }
+
       $event = new CreateVisualElementEvent($this, $model, $objectParameter);
       $this->raiseEvent(ViewController::EVENT_ON_CREATE_VISUAL_ELEMENT, $event);
       $visualElement = $event->visualElement;
 
       // Если свойство является группирующем, то пропускаем его.
-      if ($visualElement == null && HU::get(ObjectUrlRule::PARAM_GROUP_PARAMETER) == $objectParameter->getIdParameter()) {
+      /*if ($visualElement == null && HU::get(ObjectUrlRule::PARAM_GROUP_PARAMETER) == $objectParameter->getIdParameter()) {
         $visualElement = Yii::app()->controller->createWidget('backend.widgets.hiddenField.HiddenFieldWidget', array(
           'model' => $model,
           'attributeName' => $objectParameter->getFieldName(),
@@ -137,7 +143,7 @@ class ViewController extends DaObjectController {
         $visualElementArray[] = $visualElement;
         $model->{$objectParameter->getFieldName()} = HU::get(ObjectUrlRule::PARAM_GROUP_INSTANCE);
         continue;
-      }
+      }*/
 
       if ($visualElement == null) $visualElement = VisualElementFactory::getVisualElement($model, $objectParameter);
 

@@ -20,21 +20,21 @@ abstract class BaseApplication extends CWebApplication {
   
   private $_params = null;
 
-  public $version = '0.93.9';
-  public $versionDate = '21.10.2013';
+  public $version = '0.94';
+  public $versionDate = '17.06.2014';
 
   public function __construct($config = null) {
     parent::__construct($config);
     register_shutdown_function(array($this, 'onShutdownHandler'));
   }
-  
+
   public function setModels(array $models) {
     $this->_models = array_merge($this->_models, $models);
   }
   public function getModels() {
     return $this->_models;
   }
-  
+
   public function getParams() {
     if ($this->_params !== null)
       return $this->_params;
@@ -44,7 +44,7 @@ abstract class BaseApplication extends CWebApplication {
       return $this->_params;
     }
   }
-  
+
   /**
    * Обработчик фатальных ошибок
    */
@@ -78,7 +78,7 @@ abstract class BaseApplication extends CWebApplication {
     $path = $this->getRuntimePath().'/plugin-compile.dat';
     file_put_contents($path, serialize($config));
   }
-  
+
   public function setPlugins($val) {
     $this->_plugins = $val;
   }
@@ -109,7 +109,8 @@ abstract class BaseApplication extends CWebApplication {
       'ygin.controllers.*',
     ));
 
-    $this->controllerMap['static'] = 'ygin.controllers.StaticController';
+    if (!isset($this->controllerMap['static']))
+      $this->controllerMap['static'] = 'ygin.controllers.StaticController';
 
     mb_internal_encoding('UTF-8');
     mb_regex_encoding('UTF-8');

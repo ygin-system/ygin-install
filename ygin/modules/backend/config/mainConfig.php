@@ -5,7 +5,7 @@
 $adminUrl = 'admin';
 // чтобы в каждом маршруте не прописывыать admin и т.о. найти нужный контроллер
 $request = new CHttpRequest();
-$_SERVER['HTTP_X_REWRITE_URL'] = str_replace('//', '/', str_replace($adminUrl, '', $request->getRequestUri()));
+$_SERVER['HTTP_X_REWRITE_URL'] = str_replace('//', '/', str_replace('/'.$adminUrl.'/', '/', $request->getRequestUri()));
 
 $mainConfig = array(
   'name'=>'Engine macro',
@@ -38,6 +38,7 @@ $mainConfig = array(
     'ygin.user',
     'ygin.mail',
     'ygin.menu',
+    'ygin.viewGenerator',
   ),
   
   // application components
@@ -78,7 +79,7 @@ $mainConfig = array(
       'class' => 'CWidgetFactory',
       'widgets' => array(
         'BreadcrumbsWidget' => array(
-          'separator' => ' <span class="divider">/</span>',
+          'separator' => '',
           'tagName' => 'ul',
           'htmlOptions' => array('class' => 'breadcrumb'),
           'encodeLabel' => false,

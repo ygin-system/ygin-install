@@ -33,12 +33,15 @@ class DefaultController extends DaObjectController {
     /**
      * @var $model DaActiveRecord
      * @var $object DaObject
+     * @var $view DaObjectView
      */
     $object = Yii::app()->backend->object;
     $view = Yii::app()->backend->objectView;
     $model = $object->getModel();
     $idObject = $object->id_object;
     $idView = $view->id_object_view;
+
+    $this->pageDescription = $view->description;
 
     if ($this->_groupInstance != null) {
       $linkObject = Yii::app()->createUrl(BackendModule::ROUTE_INSTANCE_LIST, array(
@@ -79,8 +82,8 @@ class DefaultController extends DaObjectController {
 
           $this->buttons[] = array(
             'url' => $link,
-            'caption' => '<i class="icon-arrow-up icon-white"></i> Вверх',
-            'class' => 'btn-warning'
+            'caption' => '<i class="glyphicon glyphicon-arrow-up icon-white"></i> Вверх',
+            'class' => 'btn-primary'
           );
 
           $this->breadcrumbs = array();
@@ -116,7 +119,7 @@ class DefaultController extends DaObjectController {
       $link = ObjectUrlRule::createUrlFromCurrent(BackendModule::ROUTE_INSTANCE_LIST, array(ObjectUrlRule::PARAM_OBJECT_INSTANCE => -1));
       array_unshift($this->buttons, array(
           'url' => $link,
-          'caption' => '<i class="icon-plus icon-white"></i> Создать',
+          'caption' => '<i class="glyphicon glyphicon-plus icon-white"></i> Создать',
           'class' => 'btn-success',
           'code' => 'create',
       ));
@@ -201,6 +204,7 @@ class DefaultController extends DaObjectController {
       'pageVar'=>'go',
       'params'=>array_merge(ObjectUrlRule::getCurrentParams(), HU::arrayToQueryArray('ParameterSearchForm', HU::get('ParameterSearchForm', array())) ),
     ) : false);
+
     $dataProvider->pagination = $paginatorConfig;
 
     Yii::import('backend.components.column.*');
@@ -221,7 +225,7 @@ class DefaultController extends DaObjectController {
           'sortable'=>false,
           'header'=>'&nbsp;',
           'type'=>'raw',
-          'value'=>'\'<i class="icon-resize-vertical"></i>\'',
+          'value'=>'\'<i class="glyphicon glyphicon-resize-vertical"></i>\'',
           'htmlOptions' => array('class'=>'col-num sorter', 'title'=>'Перетащите элемент для изменения последовательности'),
         );
         Yii::app()->clientScript->registerScript('admin.sequence-order.init_client', '$(".b-instance-list").daInstanceSequence('.CJavaScript::encode(array('idObject'=>$idObject, 'isAjax'=>$isSortAjax)).');', CClientScript::POS_READY);
@@ -240,7 +244,7 @@ class DefaultController extends DaObjectController {
       /*        $daPage->addIdAjax(DA_AJAX_SORT_INSTANCES);
               if (!$isSortAjax) {
                 $this->buttons[] = array(
-                  'html' => '<button class="btn" onclick="$(\".b-instance-list\").daUpdateSequence({\"idObject\":'.$idObject.', \"isNotify\":true});"><i class="icon-indent-right"></i> Упорядочить</button>',
+                  'html' => '<button class="btn btn-default" onclick="$(\".b-instance-list\").daUpdateSequence({\"idObject\":'.$idObject.', \"isNotify\":true});"><i class="glyphicon glyphicon-indent-right"></i> Упорядочить</button>',
                 );
               }
       */
@@ -320,7 +324,7 @@ class DefaultController extends DaObjectController {
       }
       $gridColumns[] = $columnConfig;
     }
-    $select = $pk.', '.implode(',', $selectFields);
+    $select = $pk.(count($selectFields) > 0 ? ', '.implode(',', $selectFields) : '');
     if ($view->getSelect() != null) $select .= ', '.$view->getSelect();
     if ($view->id_parent != null) $select .= ','.$view->id_parent;
     $criteria->select = $select;
@@ -377,11 +381,17 @@ class DefaultController extends DaObjectController {
       'dataProvider'=>$dataProvider,
       'columns'=>$gridColumns,
 
-      'pager'=>'LinkPagerWidget',
+      'pager'=>array(
+        'class' => 'LinkPagerWidget',
+        'pagerCssClass' => '',
+        'firstPageLabel' => '<i class="glyphicon glyphicon-chevron-left"></i>',
+        'lastPageLabel' => '<i class="glyphicon glyphicon-chevron-right"></i>',
+        'htmlOptions' => array('class' => 'yiiPager pagination pagination-sm'),
+      ),
       'enablePagination'=>$withSwitchPages,
 
       'summaryCssClass'=>'b-instance-list-count',
-      'pagerCssClass'=>'pgination-container',
+      'pagerCssClass'=>'b-pagination-container',
       'cssFile'=>false,
       'itemsCssClass'=>'table table-bordered b-instance-list daGallery',
       'rowCssClass'=>array('base','alt'),

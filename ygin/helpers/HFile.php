@@ -112,13 +112,14 @@ class HFile extends CFileHelper {
    */
   public static function getFileNameByPath($path, $withOutExt = false) {
     $file = $path;
+    $path = self::normalizePath($path);
     if ($path != null) {
       $lastPos = mb_strrpos($path, "/");
-      if (!($lastPos === false)) {
+      if ($lastPos !== false) {
         $file = mb_substr($path, $lastPos+1);
       }
     }
-    
+
     if ($withOutExt === true || is_string($withOutExt)) {
       $ext = self::getExtension($file);
       $l = mb_strlen($ext);
@@ -150,7 +151,8 @@ class HFile extends CFileHelper {
    * @return string Нормализованный путь
    */
   public static function normalizePath($path) {
-    return str_replace('\\', '/', $path);
+    $str = str_replace('\\', '/', $path);
+    return str_replace('//', '/', $str);
   }
   /**
    * Возвращает путь до последнего прямого слеша
@@ -205,6 +207,23 @@ class HFile extends CFileHelper {
       $data = str_replace($search, $replace, $data);
     }
     file_put_contents($filePath, $data);
+  }
+
+  private static function toBytes($str){
+    $val = trim($str);
+    $last = strtolower($str[strlen($str)-1]);
+    switch($last) {
+      case 'g': $val *= 1024;
+      case 'm': $val *= 1024;
+      case 'k': $val *= 1024;
+    }
+    return $val;
+  }
+
+  public static function getMaxUploadFileSize() {
+    $postSize = self::toBytes(ini_get('post_max_size'));
+    $uploadSize = self::toBytes(ini_get('upload_max_filesize'));
+    return min($postSize, $uploadSize);
   }
 
 }

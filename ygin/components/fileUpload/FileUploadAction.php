@@ -176,7 +176,11 @@ class FileUploadAction extends CAction {
         }
         $this->afterUpload();
       } else {
-        throw new CHttpException(400, $this->getModelErrors($formModel));
+        if (isset($formModel->errors['file'])) {
+          throw new DaHttpException(400, $this->getModelErrors($formModel)); // без логирования
+        } else {
+          throw new CHttpException(400, $this->getModelErrors($formModel));
+        }
       }
     }
   }
@@ -249,7 +253,7 @@ class FileUploadAction extends CAction {
   }
   protected function afterUpload() {
     if ($this->hasEventHandler('onAfterUpload')) {
-      $this->onBeforeUpload(new CEvent($this));
+      $this->onAfterUpload(new CEvent($this));
     }
   }
   protected function beforeUploadValidate() {

@@ -2,6 +2,8 @@
   class DaFrontendController extends DaWebController {
 
     protected $urlAlias = null;
+    public $idSiteModuleTemplate = null;
+    public $encodeEmail = true;
 
     public function init() {
       parent::init();
@@ -10,12 +12,12 @@
 
     public function processOutput($output) {
       $output = parent::processOutput($output);
-      if (true || $this->_encodeEmail) {  // TODO
+      if ($this->encodeEmail) {
         $output = HEmailEncode::encodeHtmlSource($output);
       }
       return $output;
     }
-    
+
     protected function beforeAction($action) {
       if (parent::beforeAction($action)) {
         // Пытаемся найти раздел меню по урлу
@@ -30,8 +32,11 @@
             $menu = $menu->getParent();
           }
           $this->breadcrumbs = array_reverse($this->breadcrumbs);
+          /**
+           * @var Menu $menu
+           */
           $menu = Yii::app()->menu->current;
-          
+
           // title
           if ($menu->title_teg != null) $this->setPageTitle($menu->title_teg);
           
@@ -41,7 +46,6 @@
           // description
           if ($menu->meta_description != null) $this->setDescription($menu->meta_description);
           	else $this->setDescription($menu->caption);
-          	
         }
         return true;
       }
