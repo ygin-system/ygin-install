@@ -7,7 +7,6 @@ content/*
 protected/data/*.db
 *.txt
 !robots.txt
-*.php
 !index.php
 *.swf
 
